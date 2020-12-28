@@ -1,0 +1,13 @@
+player actions:
+-jump
+-crouch
+-block by walking backwards while standing/while crouching
+    -crouching block cant block jump attacks
+    -standing block cant block crouch attacks
+-2 normal attacks for standing, crouhcing, jumping
+    -1 slow, longer range, higher damage attack
+    -1 fast, shorter range, lower damage attack
+-2 special attacks, fireball, uppercut
+    -fireball should look like an ice block and travel slowly across the screen, cant be used while couching or jumping
+    -uppercut should give some invincibility frames and is meant to stop jump in attacks
+-grab while standing close to the enemy, is meant to go through blocks, so blocks arent op
