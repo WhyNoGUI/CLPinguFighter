@@ -8,6 +8,7 @@ plugins {
 }
 
 dependencies {
+    implementation(group="org.processing", name="core", version="3.3.7")
 }
 
 group = "com.whynogui.clpf"
