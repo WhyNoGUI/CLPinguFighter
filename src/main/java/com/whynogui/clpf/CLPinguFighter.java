@@ -23,49 +23,51 @@ public class CLPinguFighter {
             while (true) {
                 int readCharacters = 0;
                 while (readCharacters <5) {
+                    readCharacters++;
                 KeyStroke keyStroke = terminal.pollInput();
                 if (keyStroke != null) {
-                    switch (keyStroke.getKeyCode()) {
-                        case 13 -> {
+                    KeyType keyType = keyStroke.getKeyType();
+                    if (keyType == KeyType.Character) {
+                        switch (keyType) {
+                                case 'w'-> {
+                                    board.eventP1 = "up";
+                                }
+                                case 'a'-> {
+                                    board.eventP1 = "left";
+                                }
+                                case 's'-> {
+                                    board.eventP1 = "down";
+                                }
+                                case 'd'-> {
+                                    board.eventP1 = "right";
+                                }
+                                case ' '-> {
+                                    board.eventP1 = "special";
+                                }
+                        }
+                    } else {
+                    switch (keyType) {
+                        case KeyType.Enter -> {
                             //ENTER = iceblock2
                             board.eventP2 = "special";
                         }
-                        case 37 -> {
+                        case KeyType.ArrowLeft -> {
                             //left2
                             board.eventP2 = "left";
                         }
-                        case 38 -> {
+                        case KeyType.ArrowUp -> {
                             //up2
                             board.eventP2 = "up";
                         }
-                        case 39 -> {
+                        case KeyType.ArrowRight -> {
                             //right2
                             board.eventP2 = "right";
                         }
-                        case 40 -> {
+                        case KeyType.ArrowDown -> {
                             //down2
                             board.eventP2 = "down";
                         }
-                        case 32 -> {
-                            //SPACE = iceblock1
-                            board.eventP1 = "special";
-                        }
-                        case 65 -> {
-                            //left1
-                            board.eventP1 = "left";
-                        }
-                        case 87 -> {
-                            //up1
-                            board.eventP1 = "up";
-                        }
-                        case 68 -> {
-                            //right1
-                            board.eventP1 = "right";
-                        }
-                        case 83 -> {
-                            //down1
-                            board.eventP1 = "down";
-                        }
+                    }
                     }
 
                     if (keyStroke.getKeyType() == KeyType.Escape || keyStroke.getKeyType() == KeyType.EOF) {
