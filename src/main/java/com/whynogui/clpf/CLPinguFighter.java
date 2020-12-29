@@ -44,6 +44,18 @@ public class CLPinguFighter {
                                 case ' '-> {
                                     board.eventP1 = "special";
                                 }
+                                case '+'-> {
+                                    board.eventP1 = "heavyPunch";
+                                }
+                                case '-'-> {
+                                    board.eventP1 = "lightPunch";
+                                }
+                                case 'h'-> {
+                                    board.eventP1 = "heavyPunch";
+                                }
+                                case 'l'-> {
+                                    board.eventP1 = "lightPunch";
+                                }
                         }
                     } else {
                     switch (keyType) {
