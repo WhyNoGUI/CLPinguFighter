@@ -9,6 +9,22 @@ import com.whynogui.clpf.lanterna.TerminalPixelScreen;
 
 import java.io.IOException;
 
+/*
+//uncomment for processing/debug version
+package com.whynogui.clpf;
+
+import processing.core.PApplet;
+
+public class CLPinguFighter {
+
+    public static void main(String[] args) {
+        PApplet.main("com.whynogui.clpf.CLPinguFighterApplet");
+    }
+
+}
+*/
+
+
 public class CLPinguFighter {
 
     public static void main(String[] args) {
