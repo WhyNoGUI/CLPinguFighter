@@ -146,6 +146,19 @@ public class Player extends Sprite {
                     iceblock.setDx(boardWidth/100 * (facingRight ? 1 : -1));
                 }
             }
+            case "uppercut" -> {
+                //jumping animation
+                if (cooldown >= 30) {
+                    y -= boardHeight / 20;
+                    hitbox = new Rectangle(x + width, y + height / 5, width / 3, height * 2 / 3);
+                    hurtBox = new Rectangle(x,y,0,0);
+                }
+                //falling animation
+                else if (cooldown < 10) {
+                    y += boardHeight / 20;
+                    updateHurtBox();
+                }
+            }
             default -> {
             }
         }
@@ -162,11 +175,11 @@ public class Player extends Sprite {
                 updateHurtBox();
             }
             case "jump" -> {
-                cooldown = 80;
+                cooldown = 40;
                 state = "jump";
             }
             case "crouch" -> {
-                cooldown = 80;
+                cooldown = 40;
                 state = "crouch";
             }
             case "heavyPunch" -> {
@@ -184,6 +197,10 @@ public class Player extends Sprite {
             case "special" -> {
                 cooldown = 50;
                 state = "special";
+            }
+            case "uppercut" -> {
+                cooldown = 40;
+                state = "uppercut";
             }
             default -> {
 
