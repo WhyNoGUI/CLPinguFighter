@@ -209,13 +209,13 @@ public class Board {
     }
 
     private void updateHealth1(int currentHealth) {
-        if((currentHealth - currentHealth%10 - player1.health - player1.health%10) >= 1) {
+        if(((currentHealth - currentHealth%10) - (player1.health - player1.health%10)) >= 1) {
             health1 = new Rectangle((int) Math.round(health1.getX() + (this.width/2) - (this.width/10)), 0, (int) Math.round(health1.getWidth() - (this.width/2) - (this.width/10)), this.height/15);
         }
     }
 
     private void updateHealth2(int currentHealth) {
-        if((currentHealth - currentHealth%10 - player2.health - player2.health%10) >= 1) {
+        if(((currentHealth - currentHealth%10) - (player2.health - player2.health%10)) >= 1) {
             health2 = new Rectangle((this.width/2) + (this.width/10), 0, (int) Math.round(health2.getWidth() - (this.width/2) - (this.width/10)), this.height/15);
         }
     }
