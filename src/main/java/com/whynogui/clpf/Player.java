@@ -148,6 +148,7 @@ public class Player extends Sprite {
                 }
             }
             case "uppercut" -> {
+                if (facingRight) {
                 //jumping animation
                 if (cooldown >= 30) {
                     y -= boardHeight / 20;
@@ -158,6 +159,19 @@ public class Player extends Sprite {
                 else if (cooldown < 10) {
                     y += boardHeight / 20;
                     updateHurtBox();
+                }
+                } else {
+                    //jumping animation
+                if (cooldown >= 30) {
+                    y -= boardHeight / 20;
+                    hitbox = new Rectangle(x - width / 3, y + height / 5, width / 3, height * 2 / 3);
+                    hurtBox = new Rectangle(x,y,0,0);
+                }
+                //falling animation
+                else if (cooldown < 10) {
+                    y += boardHeight / 20;
+                    updateHurtBox();
+                }
                 }
             }
             default -> {
