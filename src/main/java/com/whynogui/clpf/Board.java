@@ -4,6 +4,7 @@ public class Board {
     private int width, height;
     private int groundLevel;
     Player player1, player2;
+    String eventP1, eventP2;
 
     public Board (int width, int height) {
         this.width = width;
@@ -16,8 +17,8 @@ public class Board {
     }
 
     public void gameLoop () {
-        String eventP1 = ""; //TODO: W,A,S,D... in "LEFT","RIGHT" etc. übersetzen
-        String eventP2 = ""; //TODO: Pfeiltasten, Space... in "LEFT","RIGHT" etc. übersetzen
+        eventP1 = ""; //TODO: W,A,S,D... in "LEFT","RIGHT" etc. übersetzen
+        eventP2 = ""; //TODO: Pfeiltasten, Space... in "LEFT","RIGHT" etc. übersetzen
 
         player1.update(eventP1);
         player2.update(eventP2);
