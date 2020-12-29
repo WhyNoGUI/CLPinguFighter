@@ -5,7 +5,7 @@ import java.awt.*;
 public class Board {
     private int width, height;
     private int groundLevel;
-    private Rectangle health1, health2;
+    Rectangle health1, health2;
     Player player1, player2;
     String eventP1, eventP2;
     int cooldown;
@@ -17,7 +17,9 @@ public class Board {
         int playerHeight = height/3;
         int playerWidth = width/6;
         player1 = new Player(width/6 - playerWidth / 2,groundLevel - playerHeight,playerWidth,playerHeight,true,width,height);
+        health1 = new Rectangle(0,0,(this.width/2) - (this.width/10),this.height/15);
         player2 = new Player(width *5/6 - playerWidth / 2,groundLevel - playerHeight,playerWidth,playerHeight,false,width,height);
+        health2 = new Rectangle((this.width/2) + (this.width/10),0,(this.width/2) - (this.width/10),this.height/15);
         eventP1 = "";
         eventP2 = "";
     }
@@ -215,6 +217,8 @@ public class Board {
             health2 = new Rectangle((this.width/2) + (this.width/10), 0, (int) Math.round(health2.getWidth() - (this.width/2) - (this.width/10)), this.height/15);
         }
     }
+
+
 
     void hitCooldown () {
         cooldown = 10;
