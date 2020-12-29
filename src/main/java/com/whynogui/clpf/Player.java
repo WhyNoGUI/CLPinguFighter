@@ -7,6 +7,7 @@ public class Player extends Sprite {
     public static final int HEAVY_PUNCH_DAMAGE = 8;
     public static final int LIGHT_PUNCH_DAMAGE = 3;
     public static final int ICE_BLOCK_DAMAGE = 6;
+    public static final int UPPERCUT_DAMAGE = 10;
     int health;
     int cooldown;
     int boardWidth, boardHeight;
