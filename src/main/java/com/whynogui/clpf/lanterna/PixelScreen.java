@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public interface PixelScreen extends InputProvider, Closeable {
 
-    TextColor.Indexed DEFAULT_COLOR = TextColor.Indexed.fromRGB(0, 0, 0);
+    int DEFAULT_BACKGROUND_COLOR = 0;
 
     void startScreen() throws IOException;
 
@@ -33,17 +33,19 @@ public interface PixelScreen extends InputProvider, Closeable {
 
     TerminalSize getTerminalSize();
 
-    void setColor(int column, int row, TextColor.Indexed color);
+    int getBackgroundColor();
 
-    void setColor(TerminalPosition position, TextColor.Indexed color);
+    void setColor(int column, int row, int color);
 
-    TextColor.Indexed getFrontColor(int column, int row);
+    void setColor(TerminalPosition position, int color);
 
-    TextColor.Indexed getFrontColor(TerminalPosition position);
+    int getFrontColor(int column, int row);
 
-    TextColor.Indexed getBackColor(int column, int row);
+    int getFrontColor(TerminalPosition position);
 
-    TextColor.Indexed getBackColor(TerminalPosition position);
+    int getBackColor(int column, int row);
+
+    int getBackColor(TerminalPosition position);
 
     void refresh() throws IOException;
 

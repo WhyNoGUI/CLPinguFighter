@@ -21,11 +21,11 @@ public class TerminalPixelScreen extends AbstractPixelScreen {
     private boolean fullRedrawHint;
 
     public TerminalPixelScreen(Terminal terminal) throws IOException {
-        this(terminal, DEFAULT_COLOR);
+        this(terminal, DEFAULT_BACKGROUND_COLOR);
     }
 
-    public TerminalPixelScreen(Terminal terminal, TextColor.Indexed defaultCharacter) throws IOException {
-        super(terminal.getTerminalSize(), defaultCharacter);
+    public TerminalPixelScreen(Terminal terminal, int backgroundColor) throws IOException {
+        super(terminal.getTerminalSize(), backgroundColor);
         this.terminal = terminal;
         this.terminal.addResizeListener(new TerminalPixelScreenResizeListener());
         this.isStarted = false;
@@ -113,10 +113,10 @@ public class TerminalPixelScreen extends AbstractPixelScreen {
 
         for(int y = 0; y < terminalSize.getRows(); y++) {
             for(int x = 0; x < terminalSize.getColumns(); x++) {
-                TextColor.Indexed backBufferColor = getBackBuffer().getColorAt(x, y);
-                TextColor.Indexed frontBufferColor = getFrontBuffer().getColorAt(x, y);
-                if(!backBufferColor.equals(frontBufferColor)) {
-                    updateMap.put(new TerminalPosition(x, y), backBufferColor);
+                int backBufferColor = getBackBuffer().getColorAt(x, y);
+                int frontBufferColor = getFrontBuffer().getColorAt(x, y);
+                if(backBufferColor != frontBufferColor) {
+                    updateMap.put(new TerminalPosition(x, y), new TextColor.Indexed(backBufferColor));
                 }
             }
         }
@@ -145,36 +145,9 @@ public class TerminalPixelScreen extends AbstractPixelScreen {
         }
     }
 
-    private void refreshFull() throws IOException {
-        getTerminal().setForegroundColor(TextColor.ANSI.DEFAULT);
-        getTerminal().setBackgroundColor(TextColor.ANSI.DEFAULT);
-        getTerminal().clearScreen();
-        getTerminal().resetColorAndSGR();
-
-        TextColor.Indexed currentColor = DEFAULT_COLOR;
-        for(int y = 0; y < getTerminalSize().getRows(); y++) {
-            getTerminal().setCursorPosition(0, y);
-            int currentColumn = 0;
-            for(int x = 0; x < getTerminalSize().getColumns(); x++) {
-                TextColor.Indexed newColor = getBackBuffer().getColorAt(x, y);
-                if(newColor.equals(DEFAULT_COLOR)) {
-                    continue;
-                }
-
-                if(!currentColor.equals(newColor)) {
-                    getTerminal().setBackgroundColor(newColor);
-                    currentColor = newColor;
-                }
-
-                if(currentColumn != x) {
-                    getTerminal().setCursorPosition(x, y);
-                    currentColumn = x;
-                }
-
-                getTerminal().putCharacter('c');
-                currentColumn += 1;
-            }
-        }
+    private void refreshFull() {
+        System.out.writeBytes(getBackBuffer().toByteArray());
+        System.out.flush();
     }
 
     @SuppressWarnings("WeakerAccess")

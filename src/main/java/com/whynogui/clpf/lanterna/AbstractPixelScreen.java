@@ -11,9 +11,9 @@ import java.io.IOException;
 public abstract class AbstractPixelScreen implements PixelScreen {
 
     private TerminalPosition cursorPosition;
-    private WhiteSpaceScreenBuffer backBuffer;
-    private WhiteSpaceScreenBuffer frontBuffer;
-    private final TextColor.Indexed defaultColor;
+    private ByteBufferPixelScreenBuffer backBuffer;
+    private ByteBufferPixelScreenBuffer frontBuffer;
+    private final int backgroundColor;
 
     private TabBehaviour tabBehaviour;
 
@@ -22,15 +22,15 @@ public abstract class AbstractPixelScreen implements PixelScreen {
     private TerminalSize latestResizeRequest;
 
     public AbstractPixelScreen(TerminalSize initialSize) {
-        this(initialSize, DEFAULT_COLOR);
+        this(initialSize, DEFAULT_BACKGROUND_COLOR);
     }
 
     @SuppressWarnings({"SameParameterValue", "WeakerAccess"})
-    public AbstractPixelScreen(TerminalSize initialSize, TextColor.Indexed defaultColor) {
-        this.frontBuffer = new WhiteSpaceScreenBuffer(initialSize);
-        this.backBuffer = new WhiteSpaceScreenBuffer(initialSize);
-        this.defaultColor = defaultColor;
-        this.cursorPosition = new TerminalPosition(0, 0);
+    public AbstractPixelScreen(TerminalSize initialSize, int backgroundColor) {
+        this.frontBuffer = new Ansi8PixelScreenBuffer(initialSize, backgroundColor);
+        this.backBuffer = new Ansi8PixelScreenBuffer(initialSize, backgroundColor);
+        this.backgroundColor = backgroundColor;
+        this.cursorPosition = null;
         this.tabBehaviour = TabBehaviour.ALIGN_TO_COLUMN_4;
         this.terminalSize = initialSize;
         this.latestResizeRequest = null;
@@ -75,32 +75,37 @@ public abstract class AbstractPixelScreen implements PixelScreen {
     }
 
     @Override
-    public void setColor(TerminalPosition position, TextColor.Indexed color) {
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    @Override
+    public void setColor(TerminalPosition position, int color) {
         setColor(position.getColumn(), position.getRow(), color);
     }
 
     @Override
-    public synchronized void setColor(int column, int row, TextColor.Indexed color) {
+    public synchronized void setColor(int column, int row, int color) {
         backBuffer.setColorAt(column, row, color);
     }
 
     @Override
-    public synchronized TextColor.Indexed getFrontColor(TerminalPosition position) {
+    public synchronized int getFrontColor(TerminalPosition position) {
         return getFrontColor(position.getColumn(), position.getRow());
     }
 
     @Override
-    public TextColor.Indexed getFrontColor(int column, int row) {
+    public int getFrontColor(int column, int row) {
         return getColorFromBuffer(frontBuffer, column, row);
     }
 
     @Override
-    public synchronized TextColor.Indexed getBackColor(TerminalPosition position) {
+    public synchronized int getBackColor(TerminalPosition position) {
         return getBackColor(position.getColumn(), position.getRow());
     }
 
     @Override
-    public TextColor.Indexed getBackColor(int column, int row) {
+    public int getBackColor(int column, int row) {
         return getColorFromBuffer(backBuffer, column, row);
     }
 
@@ -116,7 +121,7 @@ public abstract class AbstractPixelScreen implements PixelScreen {
 
     @Override
     public synchronized void clear() {
-        backBuffer.setAll(defaultColor);
+        backBuffer.setAll(backgroundColor);
     }
 
     @Override
@@ -137,11 +142,11 @@ public abstract class AbstractPixelScreen implements PixelScreen {
         return terminalSize;
     }
 
-    protected WhiteSpaceScreenBuffer getFrontBuffer() {
+    protected ByteBufferPixelScreenBuffer getFrontBuffer() {
         return frontBuffer;
     }
 
-    protected WhiteSpaceScreenBuffer getBackBuffer() {
+    protected ByteBufferPixelScreenBuffer getBackBuffer() {
         return backBuffer;
     }
 
@@ -158,7 +163,7 @@ public abstract class AbstractPixelScreen implements PixelScreen {
         latestResizeRequest = newSize;
     }
 
-    private TextColor.Indexed getColorFromBuffer(WhiteSpaceScreenBuffer buffer, int column, int row) {
+    private int getColorFromBuffer(ByteBufferPixelScreenBuffer buffer, int column, int row) {
         return buffer.getColorAt(column, row);
     }
 
