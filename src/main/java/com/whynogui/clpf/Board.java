@@ -210,7 +210,7 @@ public class Board {
 
     private void updateHealth1(int currentHealth) {
         if(((currentHealth - currentHealth%10) - (player1.health - player1.health%10)) >= 1) {
-            health1 = new Rectangle(health1.x + (this.width/2) - (this.width/10), 0, health1.width - ((this.width/2) - (this.width/10))/10, this.height/15);
+            health1 = new Rectangle(health1.x + ((this.width/2) - (this.width/10))/10, 0, health1.width - ((this.width/2) - (this.width/10))/10, this.height/15);
         }
     }
 
