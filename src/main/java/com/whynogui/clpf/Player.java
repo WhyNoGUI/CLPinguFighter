@@ -8,10 +8,10 @@ public class Player extends Sprite {
     public static final int LIGHT_PUNCH_DAMAGE = 3;
     public static final int ICE_BLOCK_DAMAGE = 6;
     int health;
-    private int cooldown;
+    int cooldown;
     int boardWidth, boardHeight;
     private Rectangle hurtBox, hitbox;
-    private IceBlock iceblock;
+    IceBlock iceblock;
     String state;
     boolean facingRight;
 
@@ -22,7 +22,7 @@ public class Player extends Sprite {
         this.facingRight = facingRight;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
-        updateHitbox();
+        updateHurtBox();
     }
 
     public Rectangle getHurtBox () {
@@ -50,49 +50,86 @@ public class Player extends Sprite {
         if (cooldown == 0) {
             if (!state.equals("neutral")) {
                 state = "neutral";
-                hitbox = new Rectangle(x, y, width, height);
-                hurtBox = null;
+                updateHurtBox();
+                hitbox = null;
             }
         }
         else cooldown--;
         switch (state) {
-            case "neutral" -> {
+            case "neutral","invincible" -> {
+                //the invincible state gets cancelled if the player presses a key during its duration
                 doAction(event);
             }
             case "jump" -> {
-                if (cooldown > 60)
-                    y += boardHeight/50;
-                else if (cooldown < 20)
-                    y -= boardHeight/50;
-                updateHitbox();
+                if (cooldown >= 30)
+                    y -= boardHeight/20;
+                else if (cooldown < 10)
+                    y += boardHeight/20;
+                updateHurtBox();
             }
             case "crouch" -> {
-                if (cooldown > 60)
-                    y -= boardHeight/60;
-                else if (cooldown < 20)
-                    y += boardHeight/60;
-                updateHitbox();
+                if (cooldown >= 30) {
+                    y += boardHeight / 30;
+                    height -= boardHeight / 60;
+                }
+                else if (cooldown < 10) {
+                    y -= boardHeight / 30;
+                    height += boardHeight / 60;
+                }
+                updateHurtBox();
             }
             case "heavyPunch" -> {
-                if (cooldown > 40) {
-                    //Animation
-                } else if (cooldown == 40)
-                    hurtBox = new Rectangle(x+width,y+height/5,width*3/2,height*2/5);
-                else if (cooldown == 39)
-                    hurtBox = null;
-                else {
-                    //Animation
+                if (facingRight) {
+                    if (cooldown > 42) {
+                        //Animation
+                    } else if (cooldown == 42)
+                        hitbox = new Rectangle(x + width, y + height / 5, width / 4, height * 2 / 5);
+                    else if (cooldown == 41)
+                        hitbox = new Rectangle(x + width, y + height / 5, width *2 / 4, height * 2 / 5);
+                    else if (cooldown == 40)
+                        hitbox = new Rectangle(x + width, y + height / 5, width * 3 / 2, height * 2 / 5);
+                    else if (cooldown == 38)
+                        hitbox = null;
+                    else {
+                        //Animation
+                    }
+                } else {
+                    if (cooldown > 42) {
+                        //Animation
+                    } else if (cooldown == 42)
+                        hitbox = new Rectangle(x - width / 4, y + height / 5, width / 4, height * 2 / 5);
+                    else if (cooldown == 41)
+                        hitbox = new Rectangle(x - width * 2 / 4, y + height / 5, width * 2 / 4, height * 2 / 5);
+                    else if (cooldown == 40)
+                        hitbox = new Rectangle(x - width * 3 / 2, y + height / 5, width * 3 / 2, height * 2 / 5);
+                    else if (cooldown == 38)
+                        hitbox = null;
+                    else {
+                        //Animation
+                    }
                 }
             }
             case "lightPunch" -> {
-                if (cooldown > 25) {
-                    //Animation
-                } else if (cooldown == 25)
-                    hurtBox = new Rectangle(x+width,y+height/5,width,height*2/5);
-                else if (cooldown == 24)
-                    hurtBox = null;
-                else {
-                    //Animation
+                if (facingRight) {
+                    if (cooldown > 25) {
+                        //Animation
+                    } else if (cooldown == 25)
+                        hitbox = new Rectangle(x + width, y + height / 5, width, height * 2 / 5);
+                    else if (cooldown == 24)
+                        hitbox = null;
+                    else {
+                        //Animation
+                    }
+                } else {
+                    if (cooldown > 25) {
+                        //Animation
+                    } else if (cooldown == 25)
+                        hitbox = new Rectangle(x - width, y + height / 5, width, height * 2 / 5);
+                    else if (cooldown == 24)
+                        hitbox = null;
+                    else {
+                        //Animation
+                    }
                 }
             }
             default -> {
@@ -104,11 +141,11 @@ public class Player extends Sprite {
         switch (event) {
             case "left" -> {
                 x -= boardWidth/120;
-                updateHitbox();
+                updateHurtBox();
             }
             case "right" -> {
                 x += boardWidth/120;
-                updateHitbox();
+                updateHurtBox();
             }
             case "jump" -> {
                 cooldown = 80;
@@ -131,7 +168,7 @@ public class Player extends Sprite {
                 state = "block";
             }
             case "special" -> {
-                iceblock = new IceBlock(x+width/3,y-width*2/3,width/3,width/3);
+                iceblock = new IceBlock(x+width/3,y+width/2,width/3,width/3);
                 iceblock.setDx(boardWidth/100 * (facingRight ? 1 : -1));
             }
             default -> {
@@ -140,7 +177,7 @@ public class Player extends Sprite {
         }
     }
 
-    private void updateHitbox () {
-        hitbox = new Rectangle(x,y,width,height);
+    private void updateHurtBox () {
+        hurtBox = new Rectangle(x,y,width,height);
     }
 }
