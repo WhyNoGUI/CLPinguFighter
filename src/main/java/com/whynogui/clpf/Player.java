@@ -125,7 +125,7 @@ public class Player extends Sprite {
                         //Animation
                     }
                 } else {
-                    if (cooldownn > 27) {
+                    if (cooldown > 27) {
                         //Animation
                     } else if (cooldown == 27)
                         hitbox = new Rectangle(x - width / 3, y + height / 5, width / 3, height * 2 / 5);
