@@ -29,6 +29,13 @@ public abstract class ByteBufferPixelScreenBuffer implements PixelScreenBuffer {
         this.buffer.put(initialBuffer.asReadOnlyBuffer()).flip();
     }
 
+    public ByteBufferPixelScreenBuffer(TerminalSize size, ByteBuffer buffer) {
+        this.size = size;
+        this.backgroundColor = -1;
+        this.initialBuffer = null;
+        this.buffer = buffer;
+    }
+
     private static ByteBuffer cloneByteBuffer(ByteBuffer original) {
         ByteBuffer clone = (original.isDirect()) ?
                 ByteBuffer.allocateDirect(original.capacity()) :

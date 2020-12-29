@@ -38,7 +38,7 @@ public interface PixelScreenBuffer {
     public void setColorAt(int column, int row, int color);
 
     public void setAll(int color);
-
+    
     default public void copyTo(PixelScreenBuffer destination) {
         TerminalSize size = getSize();
         copyTo(

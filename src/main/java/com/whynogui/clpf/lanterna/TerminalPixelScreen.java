@@ -172,8 +172,27 @@ public class TerminalPixelScreen extends AbstractPixelScreen {
         fullRedrawHint = true;
     }
 
-    public void drawSprite(Sprite sprite) {
-        return; // TODO
+    public void drawSprite(int column, int row, Sprite sprite) {
+        ByteBufferPixelScreenBuffer backBuffer = getBackBuffer();
+        int[][] spriteColors = sprite.getColorValues();
+        for (int x = 0; x < sprite.getWidth(); x++) {
+            for (int y = 0; y < sprite.getHeight(); y++) {
+                int spriteColor = spriteColors[x][y];
+                if (spriteColor != getBackgroundColor()) {
+                    backBuffer.setColorAt(x + column, y + row, spriteColor);
+                }
+            }
+        }
+    }
+
+    public void drawSpriteIgnoreTransparency(int column, int row, Sprite sprite) {
+        getBackBuffer().copyFrom(sprite.getPreloadedPixelBuffer(),
+                0,
+                sprite.getHeight(),
+                0,
+                sprite.getWidth(),
+                row,
+                column);
     }
 
     @Override

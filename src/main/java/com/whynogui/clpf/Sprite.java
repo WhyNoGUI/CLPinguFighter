@@ -1,6 +1,7 @@
 package com.whynogui.clpf;
 
 import com.googlecode.lanterna.TextColor;
+import com.whynogui.clpf.lanterna.Ansi8PixelScreenBuffer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -11,12 +12,14 @@ public class Sprite {
     private boolean visible;
 
     private int[][] colorValues;
+    private Ansi8PixelScreenBuffer preloadedPixelBuffer;
 
     public Sprite (int width, int height, int[][] colorValues) {
         this.width = width;
         this.height = height;
         this.colorValues = colorValues;
         visible = true;
+        preloadedPixelBuffer = Ansi8PixelScreenBuffer.convertColorArrayToBuffer(colorValues);
     }
 
     private static int rgbToAnsi8(int red, int blue, int green) {
@@ -62,6 +65,14 @@ public class Sprite {
         } catch (IOException e) {
             throw new RuntimeException("Failed to load sprite: " + path, e);
         }
+    }
+
+    public int[][] getColorValues() {
+        return colorValues;
+    }
+
+    public Ansi8PixelScreenBuffer getPreloadedPixelBuffer() {
+        return preloadedPixelBuffer;
     }
 
     public int getWidth() {

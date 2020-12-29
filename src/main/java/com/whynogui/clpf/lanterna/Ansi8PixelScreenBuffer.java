@@ -18,6 +18,10 @@ public class Ansi8PixelScreenBuffer extends ByteBufferPixelScreenBuffer {
         super(size, backgroundColor);
     }
 
+    private Ansi8PixelScreenBuffer(TerminalSize size, ByteBuffer buffer) {
+        super(size, buffer);
+    }
+
     private static int decodeThreeDigitAsciiInt(byte[] asciiDigits) {
         return PixelScreenBuffer.asciiToDigit(asciiDigits[0]) * 100
                 + PixelScreenBuffer.asciiToDigit(asciiDigits[1]) * 10
@@ -45,16 +49,16 @@ public class Ansi8PixelScreenBuffer extends ByteBufferPixelScreenBuffer {
         }
         return result;
     }
-    
-    public static ByteBuffer convertColorArrayToCompatibleBuffer(int[][] colors) {
-        ByteBuffer result = createBuffer(colors.length, colors[0].length, false, 0);
+
+    public static Ansi8PixelScreenBuffer convertColorArrayToBuffer(int[][] colors) {
+        ByteBuffer buffer = createBuffer(colors.length, colors[0].length, false, 0);
         for (int column = 0; column < colors.length; column++) {
             for (int row = 0; row < colors.length; row++) {
-                result.put(flatten2dCoordinate(column, row, colors.length) * PIXEL_FULL_SIZE + PIXEL_PREFIX.length,
+                buffer.put(flatten2dCoordinate(column, row, colors.length) * PIXEL_FULL_SIZE + PIXEL_PREFIX.length,
                         encodeThreeDigitAsciiInt(colors[column][row]));
             }
         }
-        return result;
+        return new Ansi8PixelScreenBuffer(new TerminalSize(colors.length, colors[0].length), buffer);
     }
 
     @Override
