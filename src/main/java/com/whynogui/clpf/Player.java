@@ -111,21 +111,29 @@ public class Player extends Sprite {
             }
             case "lightPunch" -> {
                 if (facingRight) {
-                    if (cooldown > 25) {
+                    if (cooldown > 27) {
                         //Animation
-                    } else if (cooldown == 25)
+                    } else if (cooldown == 27)
+                        hitbox = new Rectangle(x + width, y + height / 5, width / 3, height * 2 / 5);
+                    else if (cooldown == 26)
+                        hitbox = new Rectangle(x + width, y + height / 5, width * 2 / 3, height * 2 / 5);
+                    else if (cooldown == 25)
                         hitbox = new Rectangle(x + width, y + height / 5, width, height * 2 / 5);
-                    else if (cooldown == 24)
+                    else if (cooldown == 23)
                         hitbox = null;
                     else {
                         //Animation
                     }
                 } else {
-                    if (cooldown > 25) {
+                    if (cooldownn > 27) {
                         //Animation
-                    } else if (cooldown == 25)
+                    } else if (cooldown == 27)
+                        hitbox = new Rectangle(x - width / 3, y + height / 5, width / 3, height * 2 / 5);
+                    else if (cooldown == 26)
+                        hitbox = new Rectangle(x - width * 2 / 3, y + height / 5, width * 2 / 3, height * 2 / 5);
+                    else if (cooldown == 25)
                         hitbox = new Rectangle(x - width, y + height / 5, width, height * 2 / 5);
-                    else if (cooldown == 24)
+                    else if (cooldown == 23)
                         hitbox = null;
                     else {
                         //Animation
