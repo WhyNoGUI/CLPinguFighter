@@ -82,6 +82,6 @@ public class Board {
     }
     
     void hitCooldown () {
-        cooldown = 5;
+        cooldown = 10;
     }
 }
