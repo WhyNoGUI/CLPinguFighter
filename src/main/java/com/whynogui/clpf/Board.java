@@ -171,15 +171,21 @@ public class Board {
                     player2.state = "jump";
                 }
             }
-            case "special" -> {
-                if (player2.getIceblock() != null && player2.getIceblock().intersects(player1.getHurtBox())) {
-                    player1.health -= Player.ICE_BLOCK_DAMAGE;
-                    player1.state = "invincible";
-                    player1.cooldown = 10;
-                    player2.iceblock = null;
-                    hitCooldown();
-                }
-            }
+        }
+        
+        if (player1.getIceblock() != null && player1.getIceblock().intersects(player2.getHurtBox())) {
+            player2.health -= Player.ICE_BLOCK_DAMAGE;
+            player2.state = "invincible";
+            player2.cooldown = 10;
+            player1.iceblock = null;
+            hitCooldown();
+        }
+        if (player2.getIceblock() != null && player2.getIceblock().intersects(player1.getHurtBox())) {
+            player1.health -= Player.ICE_BLOCK_DAMAGE;
+            player1.state = "invincible";
+            player1.cooldown = 10;
+            player2.iceblock = null;
+            hitCooldown();
         }
 
         if (player1.health <= 0) {
