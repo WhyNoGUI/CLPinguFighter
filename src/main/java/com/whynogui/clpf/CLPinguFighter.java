@@ -28,7 +28,7 @@ public class CLPinguFighter {
                 if (keyStroke != null) {
                     KeyType keyType = keyStroke.getKeyType();
                     if (keyType == KeyType.Character) {
-                        switch (keyType) {
+                        switch (keyType.getCharacter()) {
                                 case 'w'-> {
                                     board.eventP1 = "up";
                                 }
