@@ -12,7 +12,7 @@ public class Player extends Sprite {
     int boardWidth, boardHeight;
     private Rectangle hurtBox, hitbox;
     IceBlock iceblock;
-    String state;
+    String state = "neutral";
     boolean facingRight;
 
 
