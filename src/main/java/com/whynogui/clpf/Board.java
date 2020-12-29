@@ -13,8 +13,8 @@ public class Board {
         groundLevel = height *7/8;
         int playerHeight = height/3;
         int playerWidth = width/6;
-        player1 = new Player(width/6,groundLevel - playerHeight,playerWidth,playerHeight,true,width,height);
-        player2 = new Player(width *5/6,groundLevel - playerHeight,playerWidth,playerHeight,false,width,height);
+        player1 = new Player(width/6 - playerWidth / 2,groundLevel - playerHeight,playerWidth,playerHeight,true,width,height);
+        player2 = new Player(width *5/6 - playerWidth / 2,groundLevel - playerHeight,playerWidth,playerHeight,false,width,height);
     }
 
     public void gameLoop () {
