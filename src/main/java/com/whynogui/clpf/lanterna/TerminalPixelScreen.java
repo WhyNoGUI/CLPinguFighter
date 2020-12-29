@@ -8,6 +8,7 @@ import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.TerminalResizeListener;
+import com.whynogui.clpf.Sprite;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -169,6 +170,10 @@ public class TerminalPixelScreen extends AbstractPixelScreen {
     public synchronized void clear() {
         super.clear();
         fullRedrawHint = true;
+    }
+
+    public void drawSprite(Sprite sprite) {
+        return; // TODO
     }
 
     @Override

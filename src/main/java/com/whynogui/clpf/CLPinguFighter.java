@@ -12,12 +12,11 @@ import java.io.IOException;
 public class CLPinguFighter {
 
     public static void main(String[] args) {
-        DefaultTerminalFactory factory = new DefaultTerminalFactory().setPreferTerminalEmulator(true);
+        DefaultTerminalFactory factory = new DefaultTerminalFactory();
         Terminal terminal = null;
         TerminalPixelScreen screen = null;
         try {
             terminal = factory.createTerminal();
-            terminal.setCursorVisible(false);
             screen = new TerminalPixelScreen(terminal, 18);
             screen.startScreen();
             while (true) {
@@ -33,13 +32,13 @@ public class CLPinguFighter {
                 terminal.setCursorPosition(0, 0);
             }
         } catch (IOException ignore) {
-
+            // IGNORE
         } finally {
             if (screen != null) {
                 try {
                     screen.close();
                 } catch (IOException ignore) {
-
+                    // IGNORE
                 }
             }
         }

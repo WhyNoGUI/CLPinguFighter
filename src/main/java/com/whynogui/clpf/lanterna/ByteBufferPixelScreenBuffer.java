@@ -43,6 +43,8 @@ public abstract class ByteBufferPixelScreenBuffer implements PixelScreenBuffer {
 
     protected abstract int getPixelByteSize();
 
+    protected abstract int getLineEndingByteSize();
+
     protected abstract int decodeAsciiInt(byte[] asciiDigits);
 
     protected abstract byte[] encodeAsciiInt(int number);
@@ -55,8 +57,12 @@ public abstract class ByteBufferPixelScreenBuffer implements PixelScreenBuffer {
         return buffer;
     }
 
+    protected static int flatten2dCoordinate(int column, int row, int numColumns) {
+        return row * numColumns + column;
+    }
+
     protected int flattenPixelPosition(int column, int row) {
-        return row * getSize().getColumns() + column;
+        return flatten2dCoordinate(column, row, getSize().getColumns());
     }
 
     @Override
@@ -177,9 +183,11 @@ public abstract class ByteBufferPixelScreenBuffer implements PixelScreenBuffer {
 
             for(int y = 0; y < rows; y++) {
                 int sourceByteOffset = ((sourceRowOffset + y) * getSize().getColumns()
-                        + sourceColumnOffset) * getPixelByteSize();
+                        + sourceColumnOffset) * getPixelByteSize()
+                        + sourceRowOffset * getLineEndingByteSize();
                 int destinationByteOffset = ((destinationRowOffset + y) * actualDestination.getSize().getColumns()
-                        + destinationColumnOffset) * actualDestination.getPixelByteSize();
+                        + destinationColumnOffset) * actualDestination.getPixelByteSize()
+                        + destinationRowOffset * actualDestination.getLineEndingByteSize();
 
                 actualDestination.buffer.put(destinationByteOffset, buffer.array(), sourceByteOffset, columns);
             }

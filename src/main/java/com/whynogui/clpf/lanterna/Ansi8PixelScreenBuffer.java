@@ -12,25 +12,54 @@ public class Ansi8PixelScreenBuffer extends ByteBufferPixelScreenBuffer {
     private static final int PIXEL_VALUE_SIZE = 3; // => '000' - '255'
     private static final byte[] PIXEL_SUFFIX = { 0x6d, 0x20 }; // => 'm ']
     private static final int PIXEL_FULL_SIZE = PIXEL_PREFIX.length + PIXEL_VALUE_SIZE + PIXEL_SUFFIX.length;
+    private static final byte LINE_ENDING = (byte) 0x10;
 
     public Ansi8PixelScreenBuffer(TerminalSize size, int backgroundColor) {
         super(size, backgroundColor);
     }
 
-    @Override
-    protected ByteBuffer createInitialBuffer() {
-        int numPixels = getSize().getRows() * getSize().getColumns();
-        byte[] bgBytes = encodeAsciiInt(getBackgroundColor());
-        byte[] initialPixelBytes = new byte[] {
+    private static int decodeThreeDigitAsciiInt(byte[] asciiDigits) {
+        return PixelScreenBuffer.asciiToDigit(asciiDigits[0]) * 100
+                + PixelScreenBuffer.asciiToDigit(asciiDigits[1]) * 10
+                + PixelScreenBuffer.asciiToDigit(asciiDigits[2]);
+    }
+
+    private static byte[] encodeThreeDigitAsciiInt(int number) {
+        return new byte[] { PixelScreenBuffer.digitToAscii(number / 100),
+                PixelScreenBuffer.digitToAscii((number % 100) / 10),
+                PixelScreenBuffer.digitToAscii(number % 10) };
+    }
+
+    private static ByteBuffer createBuffer(int numColumns, int numRows, boolean useLineEndings, int color) {
+        byte[] colorBytes = encodeThreeDigitAsciiInt(color);
+        byte[] pixelBytes = new byte[] {
                 PIXEL_PREFIX[0], PIXEL_PREFIX[1], PIXEL_PREFIX[2], PIXEL_PREFIX[3], PIXEL_PREFIX[4], PIXEL_PREFIX[5],
-                PIXEL_PREFIX[6], bgBytes[0], bgBytes[1], bgBytes[2], PIXEL_SUFFIX[0], PIXEL_SUFFIX[1]
+                PIXEL_PREFIX[6], colorBytes[0], colorBytes[1], colorBytes[2], PIXEL_SUFFIX[0], PIXEL_SUFFIX[1]
         };
-        ByteBuffer result = ByteBuffer.allocate(numPixels * getPixelByteSize() + getSize().getRows());
-        for (int i = 0; i < numPixels; i++) {
-            if (i != 0 && i % (getSize().getColumns()) == 0) result.put((byte) 0x10);
-            result.put(i * initialPixelBytes.length, initialPixelBytes);
+        ByteBuffer result = ByteBuffer.allocate(numColumns * numRows * PIXEL_FULL_SIZE + (useLineEndings ? numRows : 0));
+        for (int row = 0; row < numRows; row++) {
+            for (int column = 0; column < numColumns; column++) {
+                result.put(pixelBytes);
+            }
+            if (useLineEndings) result.put(LINE_ENDING);
         }
         return result;
+    }
+    
+    public static ByteBuffer convertColorArrayToCompatibleBuffer(int[][] colors) {
+        ByteBuffer result = createBuffer(colors.length, colors[0].length, false, 0);
+        for (int column = 0; column < colors.length; column++) {
+            for (int row = 0; row < colors.length; row++) {
+                result.put(flatten2dCoordinate(column, row, colors.length) * PIXEL_FULL_SIZE + PIXEL_PREFIX.length,
+                        encodeThreeDigitAsciiInt(colors[column][row]));
+            }
+        }
+        return result;
+    }
+
+    @Override
+    protected ByteBuffer createInitialBuffer() {
+        return createBuffer(getSize().getColumns(), getSize().getRows(), true, getBackgroundColor());
     }
 
     @Override
@@ -39,17 +68,18 @@ public class Ansi8PixelScreenBuffer extends ByteBufferPixelScreenBuffer {
     }
 
     @Override
+    protected int getLineEndingByteSize() {
+        return 1;
+    }
+
+    @Override
     protected int decodeAsciiInt(byte[] asciiDigits) {
-        return PixelScreenBuffer.asciiToDigit(asciiDigits[0]) * 100
-                + PixelScreenBuffer.asciiToDigit(asciiDigits[1]) * 10
-                + PixelScreenBuffer.asciiToDigit(asciiDigits[2]);
+        return decodeThreeDigitAsciiInt(asciiDigits);
     }
 
     @Override
     protected byte[] encodeAsciiInt(int number) {
-        return new byte[] { PixelScreenBuffer.digitToAscii(number / 100),
-                PixelScreenBuffer.digitToAscii((number % 100) / 10),
-                PixelScreenBuffer.digitToAscii(number % 10) };
+        return encodeThreeDigitAsciiInt(number);
     }
 
     @Override
