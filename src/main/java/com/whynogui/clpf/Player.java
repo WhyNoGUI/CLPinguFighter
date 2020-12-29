@@ -69,12 +69,12 @@ public class Player extends Sprite {
             }
             case "crouch" -> {
                 if (cooldown >= 30) {
-                    y += boardHeight / 30;
-                    height -= boardHeight / 60;
+                    y += boardHeight / 50;
+                    height -= boardHeight / 50;
                 }
                 else if (cooldown < 10) {
-                    y -= boardHeight / 30;
-                    height += boardHeight / 60;
+                    y -= boardHeight / 50;
+                    height += boardHeight / 50;
                 }
                 updateHurtBox();
             }
