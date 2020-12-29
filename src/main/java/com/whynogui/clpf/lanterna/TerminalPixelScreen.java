@@ -168,8 +168,7 @@ public class TerminalPixelScreen extends AbstractPixelScreen {
 
     @Override
     public synchronized void clear() {
-        super.clear();
-        fullRedrawHint = true;
+        getBackBuffer().reset();
     }
 
     public void drawSprite(int column, int row, Sprite sprite) {
