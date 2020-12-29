@@ -8,6 +8,8 @@ public class Player {
     public static final int LIGHT_PUNCH_DAMAGE = 3;
     public static final int ICE_BLOCK_DAMAGE = 6;
     public static final int UPPERCUT_DAMAGE = 10;
+    int x, y;
+    int width, height;
     int health;
     int cooldown;
     int boardWidth, boardHeight;
@@ -28,6 +30,14 @@ public class Player {
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         updateHurtBox();
+    }
+    
+    public int getX(){
+        return x;   
+    }
+    
+    public int getY(){
+        return y;   
     }
     
     public void setSprite (Sprite sprite) {
