@@ -2,7 +2,7 @@ package com.whynogui.clpf;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class Player extends Sprite {
+public class Player {
     public static final int MAX_HEALTH = 100;
     public static final int HEAVY_PUNCH_DAMAGE = 8;
     public static final int LIGHT_PUNCH_DAMAGE = 3;
@@ -15,15 +15,27 @@ public class Player extends Sprite {
     IceBlock iceblock;
     String state = "neutral";
     boolean facingRight;
+    Sprite sprite;
 
 
     public Player (int x, int y, int width, int height, boolean facingRight, int boardWidth, int boardHeight) {
-        super(x,y,width,height);
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
         health = MAX_HEALTH;
         this.facingRight = facingRight;
         this.boardWidth = boardWidth;
         this.boardHeight = boardHeight;
         updateHurtBox();
+    }
+    
+    public void setSprite (Sprite sprite) {
+        this.sprite = sprite;
+    }
+    
+    public Sprite getSprite () {
+        return sprite;
     }
 
     public Rectangle getHurtBox () {
