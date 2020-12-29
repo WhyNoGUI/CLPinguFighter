@@ -15,6 +15,8 @@ public class Board {
         int playerWidth = width/6;
         player1 = new Player(width/6 - playerWidth / 2,groundLevel - playerHeight,playerWidth,playerHeight,true,width,height);
         player2 = new Player(width *5/6 - playerWidth / 2,groundLevel - playerHeight,playerWidth,playerHeight,false,width,height);
+        eventP1 = "";
+        eventP2 = "";
     }
 
     public void gameLoop () {
@@ -22,8 +24,10 @@ public class Board {
             cooldown--;
             return;
         }
-        eventP1 = ""; //TODO: W,A,S,D... in "LEFT","RIGHT" etc. übersetzen
-        eventP2 = ""; //TODO: Pfeiltasten, Space... in "LEFT","RIGHT" etc. übersetzen
+        player1.update(eventP1);
+        player2.update(eventP2);
+        eventP1 = "";
+        eventP2 = "";
 
         player1.update(eventP1);
         player2.update(eventP2);
