@@ -18,7 +18,7 @@ public class Player {
     String state = "neutral";
     boolean facingRight;
     Sprite sprite;
-
+    Sprite iceBlockSprite;
 
     public Player (int x, int y, int width, int height, boolean facingRight, int boardWidth, int boardHeight) {
         this.x = x;
@@ -46,6 +46,14 @@ public class Player {
     
     public Sprite getSprite () {
         return sprite;
+    }
+    
+    public Sprite getIceBlockSprite() {
+        return iceBlockSprite;
+    }
+
+    public void setIceBlockSprite(Sprite iceBlockSprite) {
+        this.iceBlockSprite = iceBlockSprite;
     }
 
     public Rectangle getHurtBox () {
