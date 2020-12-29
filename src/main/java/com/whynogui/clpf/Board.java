@@ -123,6 +123,7 @@ public class Board {
                     player2.cooldown = 10;
                     hitCooldown();
                     player1.state = "jump";
+                    player1.hitbox = null;
                 }
             }
             case "special" -> {
@@ -178,6 +179,7 @@ public class Board {
                     player1.cooldown = 10;
                     hitCooldown();
                     player2.state = "jump";
+                    player2.hitbox = null;
                 }
             }
         }
