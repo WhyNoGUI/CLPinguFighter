@@ -1,8 +1,11 @@
 package com.whynogui.clpf;
 
+import java.awt.*;
+
 public class Board {
     private int width, height;
     private int groundLevel;
+    private Rectangle health1, health2;
     Player player1, player2;
     String eventP1, eventP2;
     int cooldown;
@@ -77,7 +80,8 @@ public class Board {
             player2.iceblock = null;
             hitCooldown();
         }*/
-        
+        int currentHealth = player2.health;
+
         //Player 1 damage
         switch (player1.getState()) {
             case "heavyPunch" -> {
@@ -129,7 +133,10 @@ public class Board {
                 }
             }
         }
-        
+
+        updateHealth2(currentHealth);
+
+        currentHealth = player1.health;
         //Player 2 damage
         switch (player2.getState()) {
             case "heavyPunch" -> {
@@ -172,6 +179,8 @@ public class Board {
                 }
             }
         }
+
+        updateHealth1(currentHealth);
         
         if (player1.getIceblock() != null && player1.getIceblock().intersects(player2.getHurtBox())) {
             player2.health -= Player.ICE_BLOCK_DAMAGE;
@@ -194,7 +203,19 @@ public class Board {
             //TODO: Player 1 wins
         }
     }
-    
+
+    private void updateHealth1(int currentHealth) {
+        if((currentHealth - currentHealth%10 - player1.health - player1.health%10) >= 1) {
+            health1 = new Rectangle((int) Math.round(health1.getX() + (this.width/2) - (this.width/10)), 0, (int) Math.round(health1.getWidth() - (this.width/2) - (this.width/10)), this.height/15);
+        }
+    }
+
+    private void updateHealth2(int currentHealth) {
+        if((currentHealth - currentHealth%10 - player2.health - player2.health%10) >= 1) {
+            health2 = new Rectangle((this.width/2) + (this.width/10), 0, (int) Math.round(health2.getWidth() - (this.width/2) - (this.width/10)), this.height/15);
+        }
+    }
+
     void hitCooldown () {
         cooldown = 10;
     }
