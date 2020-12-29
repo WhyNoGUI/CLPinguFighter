@@ -78,7 +78,9 @@ public class CLPinguFighter {
                 
                 Player p1 = board.player1;
                 Player p2 = board.player2;
+                if(p1.getSprite() != null) 
                 screen.drawSprite(p1.x,p1.y,p1.getSprite());
+                if(p2.getSprite() != null)
                 screen.drawSprite(p2.x,p2.y,p2.getSprite());
                 
                 screen.refresh(Screen.RefreshType.COMPLETE);
