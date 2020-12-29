@@ -140,6 +140,12 @@ public class Player extends Sprite {
                     }
                 }
             }
+            case "special" -> {
+                if (cooldown == 1) {
+                    iceblock = new IceBlock(x+width/3,y+width/2,width/3,width/3);
+                    iceblock.setDx(boardWidth/100 * (facingRight ? 1 : -1));
+                }
+            }
             default -> {
             }
         }
@@ -176,8 +182,8 @@ public class Player extends Sprite {
                 state = "block";
             }
             case "special" -> {
-                iceblock = new IceBlock(x+width/3,y+width/2,width/3,width/3);
-                iceblock.setDx(boardWidth/100 * (facingRight ? 1 : -1));
+                cooldown = 50;
+                state = "special";
             }
             default -> {
 
