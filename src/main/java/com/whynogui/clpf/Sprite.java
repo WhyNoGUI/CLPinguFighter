@@ -7,15 +7,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Sprite {
-    int x, y;
     int width, height;
     private boolean visible;
 
     private int[][] colorValues;
 
-    public Sprite (int x, int y, int width, int height, int[][] colorValues) {
-        this.x = x;
-        this.y = y;
+    public Sprite (int width, int height, int[][] colorValues) {
         this.width = width;
         this.height = height;
         this.colorValues = colorValues;
@@ -65,14 +62,6 @@ public class Sprite {
         } catch (IOException e) {
             throw new RuntimeException("Failed to load sprite: " + path, e);
         }
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public int getWidth() {
