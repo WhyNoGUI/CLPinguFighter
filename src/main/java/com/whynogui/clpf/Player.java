@@ -11,7 +11,7 @@ public class Player {
     int health;
     int cooldown;
     int boardWidth, boardHeight;
-    private Rectangle hurtBox, hitbox;
+    Rectangle hurtBox, hitbox;
     IceBlock iceblock;
     String state = "neutral";
     boolean facingRight;
